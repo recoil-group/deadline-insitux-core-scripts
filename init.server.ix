@@ -1,0 +1,2 @@
+; this script runs on the server when starting the game, once.
+; in the future, use it to load other scripts
