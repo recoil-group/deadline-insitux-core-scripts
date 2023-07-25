@@ -1,2 +1,4 @@
 ; this script runs for the server owner, once. 
 ; in the future, use it to load other scripts
+
+(print "hello world from init.client.ix!")
