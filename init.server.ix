@@ -5,20 +5,20 @@
 
 (server-event-callback-kill)
 (server-event-callback (fn player message arg1
-	(print "received message with message: " message)
-	(if (= message "inc_time") (
-		(print "incrementing time_offset")
-		(var time_offset (+ time_offset 0.5))
-		(set-var "sv_time_offset" time_offset)
-	))
-	(if (= message "set_speed") (
-		(print "setting speed")
-		(set-var "plr_speed" 5)
-	))
-	(if (= message "set_map") (
-		(print "setting map to " arg1)
-		(dl-set-map arg1)
-	))
+    (print "received message with message: " message)
+    (when (= message "inc_time") 
+        (print "incrementing time_offset")
+        (var time_offset (+ time_offset 0.5))
+        (set-var "sv_time_offset" time_offset)
+    )
+    (when (= message "set_speed") 
+        (print "setting speed")
+        (set-var "plr_speed" 5)
+    )
+    (when (= message "set_map") 
+        (print "setting map to " arg1)
+        (dl-set-map arg1)
+    )
 ))
 
 ; so that this script isn't visible
