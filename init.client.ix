@@ -1,4 +1,37 @@
 ; this script runs for the server owner, once. 
 ; in the future, use it to load other scripts
 
-(print "hello world from init.client.ix!")
+(var time_offset 0)
+(var target_map "shipment")
+
+(function send-message message (send-event-to-server message))
+(function set-game-map (send-event-to-server "set_map" target_map))
+
+(function set-target-map 
+    (obj-patch-by-id "target_map" { :text (str "Target map: " target_map) })
+)
+
+(var widget {
+	:type "floating_widget"
+    :size [220 260]
+	:title "Debugging functions"
+	:members [
+        { :type "text" :text "This is a debugging window." }
+		{ :type "button" :text "plr_speed" :callback (fn (send-message "set_speed")) }
+		{ :type "button" :text "move time by 0.5 hours" :callback (fn (send-message "inc_time")) }
+
+        { :type "text" :id "target_map" }
+        { :type "textbox" :changed (fn text (var target_map text)(set-target-map)) }
+        { :type "button" :text "Change map" :callback set-game-map }
+	]
+})
+
+(obj-clear-all)
+(obj-create widget)
+(set-target-map)
+
+; so that this script isn't visible
+(clear)
+
+(print "insitux version " (version))
+(print "dl-print-funcs is available on the server")
