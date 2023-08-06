@@ -15,8 +15,8 @@
 	:type "floating_widget"
     :size [220 260]
 	:title "Debugging functions"
+    :list_padding 4
 	:members [
-        { :type "text" :text "This is a debugging window." }
 		{ :type "button" :text "plr_speed" :callback (fn (send-message "set_speed")) }
 		{ :type "button" :text "move time by 0.5 hours" :callback (fn (send-message "inc_time")) }
 
