@@ -19,6 +19,7 @@
 	:type "floating_widget"
     :size [220 260]
 	:title "Debugging functions"
+	:id "floating_widget"
     :list_padding 4
     :visible false
 	:members [
