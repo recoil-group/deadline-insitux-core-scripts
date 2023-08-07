@@ -11,11 +11,16 @@
     (obj-patch-by-id "target_map" { :text (str "Target map: " target_map) })
 )
 
+(function open-floating-widget
+    (obj-patch-by-id "floating_widget" { :visible true })
+)
+
 (var widget {
 	:type "floating_widget"
     :size [220 260]
 	:title "Debugging functions"
     :list_padding 4
+    :visible false
 	:members [
 		{ :type "button" :text "plr_speed" :callback (fn (send-message "set_speed")) }
 		{ :type "button" :text "move time by 0.5 hours" :callback (fn (send-message "inc_time")) }
@@ -26,7 +31,16 @@
 	]
 })
 
+(var docked_widget {
+	:type "widget"
+	:title "Debugging"
+	:members [
+        { :type "button" :text "Open admin widget" :callback open-floating-widget }
+	]
+})
+
 (obj-clear-all)
+(obj-create docked_widget)
 (obj-create widget)
 (set-target-map)
 
