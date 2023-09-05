@@ -1,0 +1,10 @@
+(server-event-callback-kill)
+(server-event-callback (fn player topic data
+  (print "received message with topic: " topic)
+  (if (= topic "refill") (dl-player-refill-ammo player))
+  (if (= topic "set-map") (dl-set-map data))
+  (if (= topic "chat-message") 
+    (send-announcement data)
+    (print "sent announcement: " data)
+  )
+))

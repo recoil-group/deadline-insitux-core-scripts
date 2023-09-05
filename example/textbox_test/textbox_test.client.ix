@@ -1,0 +1,30 @@
+; this is a comment
+
+(var textbox_text "Hello world!")
+(function update-text new_text 
+    (var textbox_text new_text)
+    (obj-patch-by-id "display" { :text textbox_text })
+)
+
+(var widget {
+    :type "floating_widget"
+    :id "widget_1"
+    :title "Textbox test"
+    :size [320 128]
+    :members [
+        {
+            :type "text"
+            :id "display"
+            :text (str textbox_text)
+        }
+        {
+            :type "textbox"
+            :changed update-text
+        }
+    ]
+})
+
+(obj-clear-all)
+(obj-create widget)
+
+

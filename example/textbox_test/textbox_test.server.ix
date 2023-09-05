@@ -1,0 +1,30 @@
+; client
+(function send-message
+    (obj-patch-by-id "txt" { :text message })
+    (send-event-to-server "chat-message" message)
+)
+
+(var widget {
+    :type "widget"    
+    :title "message sender"
+    :members [
+        { :type "text" :text "text" :id "txt" }
+        { :type "textbox" :changed (fn text (var message text)(print text)) }
+        { :type "button" :text "Send message" :callback send-message }
+    ]   
+})
+
+(obj-clear-all)
+(obj-create widget)
+
+; server
+(server-event-callback-kill)
+(server-event-callback (fn player topic data
+  (print "received message with topic: " topic)
+  (if (= topic "refill") (dl-player-kick player))
+  (if (= topic "set-map") (dl-set-map data))
+  (if (= topic "chat-message") 
+    (send-announcement message)
+    (print "sent announcement: " message)
+  )
+))

@@ -1,0 +1,31 @@
+(var slider-value 1)
+(function update-value new_value 
+    (var slider-value new_value)
+    (obj-patch-by-id "display" { :text slider-value })
+    (obj-patch-by-id "slider" { :value slider-value })
+)
+
+(var widget {
+    :type "floating_widget"
+    :id "widget_1"
+    :title "Slider test"
+    :size [320 128]
+    :members [
+        {
+            :type "slider"
+            :id "slider"
+            :value slider-value
+            :changed update-value
+        }
+        {
+            :type "text"
+            :id "display"
+            :text slider-value
+        }
+    ]
+})
+
+(obj-clear-all)
+(obj-create widget)
+
+

@@ -1,0 +1,11 @@
+(var widget2 {
+    :type "floating_widget"
+    :title "Map buttons test"
+    :size [260 260]
+    :members (map (fn map-name {:type "button" :text map-name :callback #(send-event-to-server "set-map" map-name)})
+                  ["shipment" "afghanistan" "claustrophobic_v3" "claustrophobic_v4"])
+})
+
+(obj-clear-all)
+(obj-create widget2)
+
