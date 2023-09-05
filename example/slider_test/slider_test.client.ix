@@ -1,15 +1,15 @@
 (var slider-value 1)
 (function update-value new_value 
-    (var slider-value new_value)
-    (obj-patch-by-id "display" { :text slider-value })
-    (obj-patch-by-id "slider" { :value slider-value })
+    (var slider-value (* new_value 2))
+    (obj-patch-by-id "display" { :text (str "timescale: " slider-value) })
+    (obj-patch-by-id "slider" { :value new_value })
+    (send-event-to-server "set-timescale" slider-value)
 )
 
 (var widget {
     :type "floating_widget"
-    :id "widget_1"
     :title "Slider test"
-    :size [320 128]
+    :size [160 128]
     :members [
         {
             :type "slider"
@@ -20,12 +20,11 @@
         {
             :type "text"
             :id "display"
-            :text slider-value
         }
     ]
 })
 
 (obj-clear-all)
 (obj-create widget)
-
+(update-value 0.5)
 

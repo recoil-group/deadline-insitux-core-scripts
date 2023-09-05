@@ -1,0 +1,4 @@
+(server-event-callback-kill)
+(server-event-callback (fn player topic value
+  (if (= topic "set-timescale") (set-var "sv_timescale" value))
+))
