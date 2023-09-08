@@ -8,11 +8,11 @@
 (function set-game-map (send-event-to-server "set_map" target_map))
 
 (function set-target-map 
-    (obj-patch-by-id "target_map" { :text (str "Target map: " target_map) })
+    (patch-widget-by-id "target_map" { :text (str "Target map: " target_map) })
 )
 
 (function open-floating-widget
-    (obj-patch-by-id "floating_widget" { :visible true })
+    (patch-widget-by-id "floating_widget" { :visible true })
 )
 
 (var widget {
@@ -40,9 +40,9 @@
 	]
 })
 
-(obj-clear-all)
-(obj-create docked_widget)
-(obj-create widget)
+(clear-all-widgets)
+(create-widget docked_widget)
+(create-widget widget)
 (set-target-map)
 
 ; so that this script isn't visible

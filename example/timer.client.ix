@@ -1,0 +1,27 @@
+; Tests the functionality of the heartbeat timer by incrementing a number every frame 
+; and displaying it to a floating window 
+
+(var counter 0)
+(var widget {
+    :type "floating_widget"
+    :title "timer test"
+    :size [160 128]
+    :members [
+        {
+            :type "text"
+            :id "display"
+        }
+    ]
+})
+
+(function update-display
+    (var counter (+ counter 1))
+    (patch-widget-by-id "display" { :text (str "frames counted: " counter "\n" "multiline label test") })
+)
+
+(kill-on-heartbeat)
+(on-heartbeat update-display)
+
+(clear-all-widgets)
+(create-widget widget)
+

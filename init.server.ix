@@ -3,8 +3,8 @@
 
 (var time_offset 0)
 
-(server-event-callback-kill)
-(server-event-callback (fn player message arg1
+(kill-on-server-event)
+(on-server-event (fn player message arg1
     (print "received message with message: " message)
     (when (= message "inc_time") 
         (print "incrementing time_offset")
