@@ -12,14 +12,14 @@
 )
 
 (function open-floating-widget
-    (patch-widget-by-id "floating_widget" { :visible true })
+    (patch-widget-by-id "builtin_floating_widget" { :visible true })
 )
 
 (var widget {
 	:type "floating_widget"
     :size [220 260]
 	:title "Debugging functions"
-	:id "floating_widget"
+	:id "builtin_floating_widget"
     :list_padding 4
     :visible false
 	:members [
@@ -34,6 +34,7 @@
 
 (var docked_widget {
 	:type "widget"
+	:id "builtin_docked_widget"
 	:title "Debugging"
 	:members [
         { :type "button" :text "Open admin widget" :callback open-floating-widget }
