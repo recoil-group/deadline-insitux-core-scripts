@@ -4,8 +4,8 @@
 (var time_offset 0)
 (var target_map "shipment")
 
-(function send-message message (send-event-to-server message))
-(function set-game-map (send-event-to-server "set_map" target_map))
+(function send-message message (send-to-server message))
+(function set-game-map (send-to-server "set_map" target_map))
 
 (function set-target-map 
     (patch-widget-by-id "target_map" { :text (str "Target map: " target_map) })
