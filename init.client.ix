@@ -1,24 +1,25 @@
-; author: blackshibe 
-; last updated: 11/09/2023 
-; version: 0.22.0 indev
+(clear-all-widgets)
 
-; this script runs for the server owner, once. 
-; in the future, use it to load other scripts
+(function correct text to
+    (join ", " (filter (substr? text) to)))
 
 (var time_offset 0)
 (var target_map "shipment")
+(var target_var "speed")
 
-(function send-message message (send-to-server message))
-(function set-game-map (send-to-server "set_map" target_map))
+(function set-game-map (send-to-server "maps" target_map))
 
-(function set-target-map 
-    (patch-widget-by-id "target_map" { :text (str "Target map: " target_map) })
+(function change-var op (send-to-server target_var op))
+
+(function on-typing widget what
+    (patch-widget-by-id widget { :text what })
 )
 
 (function open-floating-widget
     (patch-widget-by-id "builtin_floating_widget" { :visible true })
 )
 
+(var maps-available ["shipment" "afghanistan" "claustrophobic_v3" "claustrophobic_v4" "hong_kong" "misc_backrooms" "tel_aviv" "misc_construct" "afghanistan_revamp" "misc_movement"])
 (var widget {
 	:type "floating_widget"
     :size [220 260]
@@ -27,11 +28,17 @@
     :list_padding 4
     :visible false
 	:members [
-		{ :type "button" :text "plr_speed" :callback (fn (send-message "set_speed")) }
-		{ :type "button" :text "move time by 0.5 hours" :callback (fn (send-message "inc_time")) }
+        { :type "text" :id "change_var" :text "Change {} by 0.5"}
+        { :type "textbox" :changed (fn text (var target_var text)(on-typing "change_var"
+                                                                    (str "change {" text "} by 0.5\nyou may mean: "
+                                                                        (correct text ["speed" "time"])))) }
+		{ :type "button" :text "+" :callback (fn (change-var +)) }
+        { :type "button" :text "-" :callback (fn (change-var -)) }
 
-        { :type "text" :id "target_map" }
-        { :type "textbox" :changed (fn text (var target_map text)(set-target-map)) }
+        { :type "text" :id "target_map" :text "Target map: "}
+        { :type "textbox" :changed (fn text (var target_map text)(on-typing "target_map" 
+                                                                    (str "Target map: " text "\nyou may mean: " 
+                                                                        (correct text maps-available)))) }
         { :type "button" :text "Change map" :callback set-game-map }
 	]
 })
@@ -45,10 +52,8 @@
 	]
 })
 
-(clear-all-widgets)
 (create-widget docked_widget)
 (create-widget widget)
-(set-target-map)
 
 ; so that this script isn't visible
 (clear)
