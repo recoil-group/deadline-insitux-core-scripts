@@ -32,7 +32,7 @@
 (var maps-available ["shipment" "afghanistan" "claustrophobic_v3" "claustrophobic_v4" "hong_kong" "misc_backrooms" "tel_aviv" "misc_construct" "afghanistan_revamp" "misc_movement"])
 (var widget {
 	:type "floating_widget"
-    :size [220 260]
+    :size [300 320]
 	:title "Debugging functions"
 	:id "builtin_floating_widget"
     :list_padding 4
