@@ -8,15 +8,18 @@
 (clear-all-widgets)
 
 (function correct text to
-    (join ", " (filter (substr? text) to)))
+    (join ", " (filter (substr? text) to))
+)
 
 (var time_offset 0)
 (var target_map "shipment")
 (var target_var "speed")
 
-(function set-game-map (send-to-server "maps" target_map))
+(function set-game-map (send-to-server "maps" target_map)
+)
 
-(function change-var op (send-to-server target_var op))
+(function change-var op (send-to-server target_var op)
+)
 
 (function on-typing widget what
     (patch-widget-by-id widget { :text what })

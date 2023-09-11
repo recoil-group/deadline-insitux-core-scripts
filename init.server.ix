@@ -8,12 +8,21 @@
 (kill-on-server-event)
 (var time_offset 0
      speed 1)
-(on-server-event (fn player verb subj
+(on-server-event (fn player topic change-operation/map
     (print "received message with message: " args "\nchanging: ")
-    (match verb
-           "time"       (fn (print "time") (var! time_offset #(subj % 0.5)) (set-server-variable "sv_time_offset" time_offset))
-           "speed"      (fn (print "speed") (var! speed #(subj % 0.5)) (set-server-variable "plr_speed" speed))
-           "maps"       (fn (print "maps") (set-map subj)))
+    (match topic
+           "time"       (fn (print "time") 
+                            (var time_offset (change-operation/map time_offset 0.5)) 
+                            (set-server-variable "sv_time_offset" time_offset)
+                        )
+           "speed"      (fn (print "speed") 
+                            (var speed (change-operation/map speed 0.5))
+                            (set-server-variable "plr_speed" speed)
+                        )
+           "maps"       (fn (print "maps")
+                            (set-map subj)
+                        )
+    )
 ))
 
 ; so that this script isn't visible
