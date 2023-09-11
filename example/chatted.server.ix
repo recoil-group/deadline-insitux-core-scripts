@@ -1,0 +1,7 @@
+(kill-on-player-chatted)
+(on-player-chatted (fn player channel message
+    (print player ": " message)
+    (if (= message "hi")
+        (send-announcement (str "hello, " player "!"))
+    )
+))
