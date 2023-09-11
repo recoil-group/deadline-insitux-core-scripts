@@ -1,3 +1,7 @@
+; author: blackshibe 
+; last updated: 11/09/2023 
+; version: 0.22.0 indev
+
 ; this script runs for the server owner, once. 
 ; in the future, use it to load other scripts
 

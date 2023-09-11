@@ -1,3 +1,9 @@
+; author: blackshibe 
+; last updated: 11/09/2023 
+; version: 0.22.0 indev
+
+; example of a basic chat bot
+
 (kill-on-player-chatted)
 (on-player-chatted (fn player channel message
     (print player ": " message)

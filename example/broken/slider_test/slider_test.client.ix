@@ -1,3 +1,9 @@
+; author: blackshibe 
+; last updated: 01/09/2023 
+; version: 0.22.0 indev
+
+; not updated to work in newer 0.22 releases
+
 (var slider-value 1)
 (function update-value new_value 
     (var slider-value (* new_value 2))
