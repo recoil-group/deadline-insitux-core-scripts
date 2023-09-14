@@ -1,0 +1,42 @@
+; author: fordarthur
+; last updated: 13/09/2023 
+; version: 0.22.0 indev
+
+; this script allows for map voting.
+; future versions may use widgets
+
+(var called-callback? false)
+(var timer (time))
+
+(var pool ["shipment" "afghanistan" "claustrophobic_v3" "claustrophobic_v4" "hong_kong" "misc_backrooms" "tel_aviv" "misc_construct" "afghanistan_revamp" "misc_movement"])
+(var votes {})
+
+(function choose n list
+    (return-when (zero? n) [])
+    (let chosen (rand-pick list))
+    (prepend chosen (choose (dec n) (remove [chosen] list))))
+
+(function reverse-dict d 
+  (dict (map reverse d)))
+
+(on-gamemode-finished (fn
+    (var called-callback? false)
+    (var timer (time))
+    (var votes (-> pool  @(choose 3) @(map reverse [0 0 0]) dict))
+    (send-annoucement (str "next maps: " (join " " (keys votes))))))
+
+(var topic "" voted_map "") ; have to declare these, for some reason??
+(on-player-chatted (fn _ _ msg
+    (let [topic voted_map] (split " " msg))
+    (if (> (- timer (time)) 20000)
+        (when (= topic "/vote")
+            (var votes (update-at [voted_map] inc votes)))
+        (unless called-callback?
+            (var callback-callback? true)
+            (let winner ((reverse-dict votes) (.. max (keys votes))))
+            (send-annoucement "next map: " winner)
+            (set-map winner)))))
+
+(reset)
+(kill-on-heartbeat)
+

@@ -1,5 +1,5 @@
 ; author: blackshibe, fordarthur
-; last updated: 11/09/2023 
+; last updated: 12/09/2023 
 ; version: 0.22.0 indev
 
 ; this script runs for the server owner, once. 
@@ -24,11 +24,7 @@
 (function on-typing widget what
     (patch-widget-by-id widget { :text what })
 )
-
-(function open-floating-widget
-    (patch-widget-by-id "builtin_floating_widget" { :visible true })
-)
-
+    
 (var maps-available ["shipment" "afghanistan" "claustrophobic_v3" "claustrophobic_v4" "hong_kong" "misc_backrooms" "tel_aviv" "misc_construct" "afghanistan_revamp" "misc_movement"])
 (var widget {
 	:type "floating_widget"
@@ -58,7 +54,7 @@
 	:id "builtin_docked_widget"
 	:title "Debugging"
 	:members [
-        { :type "button" :text "Open admin widget" :callback open-floating-widget }
+        { :type "button" :text "Open admin widget" :callback #(patch-widget-by-id "builtin_floating_widget" { :visible true })}
 	]
 })
 
