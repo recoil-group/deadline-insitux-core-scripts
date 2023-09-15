@@ -1,5 +1,5 @@
 ; author: blackshibe, fordarthur
-; last updated: 11/09/2023 
+; last updated: 12/09/2023 
 ; version: 0.22.0 indev
 
 ; this script runs for the server owner, once. 
@@ -8,7 +8,7 @@
 (clear-all-widgets)
 
 (function correct text to
-    (join ", " (filter (substr? text) to))
+    (join "\n" (filter (substr? text) to))
 )
 
 (var time_offset 0)
@@ -24,11 +24,7 @@
 (function on-typing widget what
     (patch-widget-by-id widget { :text what })
 )
-
-(function open-floating-widget
-    (patch-widget-by-id "builtin_floating_widget" { :visible true })
-)
-
+    
 (var maps-available ["shipment" "afghanistan" "claustrophobic_v3" "claustrophobic_v4" "hong_kong" "misc_backrooms" "tel_aviv" "misc_construct" "afghanistan_revamp" "misc_movement"])
 (var widget {
 	:type "floating_widget"
@@ -40,8 +36,8 @@
 	:members [
         { :type "text" :id "change_var" :text "Change {} by 0.5"}
         { :type "textbox" :changed (fn text (var target_var text)(on-typing "change_var"
-                                                                    (str "change {" text "} by 0.5\nyou may mean: "
-                                                                        (correct text ["speed" "time"])))) }
+                                                                    (str "change {" text "} by 0.5\n\nyou may mean: "
+                                                                        (correct text ["speed" "time"]) "\n\n"))) }
 		{ :type "button" :text "+" :callback (fn (change-var +)) }
         { :type "button" :text "-" :callback (fn (change-var -)) }
 
@@ -58,7 +54,7 @@
 	:id "builtin_docked_widget"
 	:title "Debugging"
 	:members [
-        { :type "button" :text "Open admin widget" :callback open-floating-widget }
+        { :type "button" :text "Open admin widget" :callback #(patch-widget-by-id "builtin_floating_widget" { :visible true })}
 	]
 })
 
