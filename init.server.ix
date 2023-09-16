@@ -20,7 +20,7 @@
                             (set-server-variable "plr_speed" speed)
                         )
            "maps"       (fn (print "maps")
-                            (set-map subj)
+                            (set-map change-operation/map)
                         )
     )
 ))
