@@ -9,17 +9,21 @@
 (var time_offset 0
      speed 1)
 (on-server-event (fn player topic change-operation/map
-    (print "received message with message: " args "\nchanging: ")
+    (print "received message with message: " args "\nchanging: " topic)
     (match topic
-           "time"       (fn (print "time") 
+            "time"       (fn
                             (var time_offset (change-operation/map time_offset 0.5)) 
                             (set-server-variable "sv_time_offset" time_offset)
                         )
-           "speed"      (fn (print "speed") 
+            "speed"      (fn 
                             (var speed (change-operation/map speed 0.5))
                             (set-server-variable "plr_speed" speed)
                         )
-           "maps"       (fn (print "maps")
+            "speed-set" (fn
+                            (var speed 5)
+                            (set-server-variable "plr_speed" speed)
+                        )
+            "maps"       (fn
                             (set-map change-operation/map)
                         )
     )
