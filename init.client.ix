@@ -15,16 +15,22 @@
 (var target_map "shipment")
 (var target_var "speed")
 
-(function set-game-map (send-to-server "maps" target_map)
+(function set-game-map 
+    (send-to-server "maps" target_map)
 )
 
-(function change-var op (send-to-server target_var op)
+(function change-var op 
+    (send-to-server target_var op)
 )
 
 (function on-typing widget what
     (patch-widget-by-id widget { :text what })
 )
-    
+
+(function send-speed-shortcut
+    (send-to-server "speed-set")
+)
+
 (var maps-available ["shipment" "afghanistan" "claustrophobic_v3" "claustrophobic_v4" "hong_kong" "misc_backrooms" "tel_aviv" "misc_construct" "afghanistan_revamp" "misc_movement"])
 (var widget {
 	:type "floating_widget"
@@ -55,6 +61,7 @@
 	:title "Debugging"
 	:members [
         { :type "button" :text "Open admin widget" :callback #(patch-widget-by-id "builtin_floating_widget" { :visible true })}
+        { :type "button" :text "Speed shortcut" :callback send-speed-shortcut }
 	]
 })
 
