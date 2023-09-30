@@ -1,0 +1,48 @@
+; author: fordarthur
+; last updated: 13/09/2023 
+; version: 0.22.0 indev
+
+; this script allows for map voting.
+; future versions may use widgets
+
+(var called-callback? false)
+(var timer (time))
+
+(var pool ["shipment" "afghanistan" "claustrophobic_v3" "claustrophobic_v4" "hong_kong" "misc_backrooms" "tel_aviv" "misc_construct" "afghanistan_revamp" "misc_movement"])
+(var votes {})
+
+(function choose n list
+    (return-when (zero? n) [])
+    (let chosen (rand-pick list))
+    (prepend chosen (choose (dec n) (remove [chosen] list))))
+
+(function reverse-dict d 
+  (dict (map reverse d)))
+
+(function move key value dictn
+    (let appended (-> dictn (update-at [key] (append value))))
+    (if (let voted-prev (-> dictn vals (find #(% value)) (reverse-dict dictn)))
+        (-> appended (update-at [voted-prev] (remove [value])))
+        appended))
+
+(on-gamemode-finished (fn
+    (var called-callback? false)
+    (var timer (time))
+    (var votes (-> pool  @(choose 3) @(map reverse [[] [] []]) dict))
+    (send-annoucement (str "next maps: " (join " " (keys votes))))))
+
+(var topic "" voted_map "") ; have to declare these, for some reason??
+(on-player-chatted (fn sender _ msg
+    (let [topic voted_map] (split " " msg))
+    (if (> (- timer (time)) 20000)
+        (when (= topic "/vote")
+            (var votes (move voted_map sender votes)))
+        (unless called-callback?
+            (var callback-callback? true)
+            (let winner ((reverse-dict votes) (-> votes keys (map len) (.. max))))
+            (send-annoucement "next map: " winner)
+            (set-map winner)))))
+
+(reset)
+(kill-on-heartbeat)
+
