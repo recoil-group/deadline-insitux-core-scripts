@@ -1,3 +1,3 @@
-local a = { __HELLO_WORLD = true };
+local a = { __HELLO_WORLD = true }
 
-return a = {}
+return a
