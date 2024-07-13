@@ -1,12 +1,13 @@
 -- LuauInLuau & Fiu is used to run code in the client console
 -- regular globals aren't exposed. the game global is not available
 
--- Deadline namespace globals are exposed:
+local dl_client = get_dl_client()
 
--- SharedState - universal server config (if something is changed on the server, it's changed for all clients)
--- Timescale - time speed control and events
+local SharedState = dl_client.SharedState
+local Timescale = dl_client.Timescale
+
 print("This server is in", SharedState.sv_location.value)
-print("Player running code:", Client.local_player)
+print("Player running code:", dl_client.local_player)
 
 local event
 local total_time = 0
