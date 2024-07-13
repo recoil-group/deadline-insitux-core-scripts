@@ -9,6 +9,6 @@ require("server/gamemode_setup.luau")
 
 -- chat bot
 local bot = require("server/vip_command_bot.luau")
-require(bot.__HELLO_WORLD)
+print(bot.__HELLO_WORLD)
 
 -- Console.clear()
