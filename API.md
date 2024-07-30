@@ -1,12 +1,52 @@
 # API reference
 
-This is a list of the functions available in Deadline's Luau environment.
+There's a new Luau scripting tool available in VIP servers in the dev branch as well as 0.23.0 game versions and onward that exposes functions used by the game directly. Example:
 
-## Internal workings
+```luau
+---@diagnostic disable: undefined-global
+
+if not is_private_server() and not is_studio() then
+    return
+end
+
+local prefix = "/"
+
+-- when player sends something in the chat, check if it's a command
+chat.player_chatted:Connect(function(sender, channel, content)
+    local command = content:split(" ")[1]
+    local first_letter = command:sub(1, 1)
+
+    -- if the first letter is the prefix, then it's a command
+    if first_letter ~= prefix then
+        return
+    end
+
+    -- use the command without the prefix
+    command = command:sub(2, -1)
+
+    local str = string.format("hi, %s! Ran command: %s", sender, command)
+    chat.send_announcement(str, Color3.fromRGB(227, 93, 244))
+end)
+```
+
+There is one for the client and server. The client can change sounds played by the game, create custom UI widgets, load map/attachment mods, talk to the server, etc.
+
+# How to
+
+-   Get a VIP server in the development branch or main game (0.23.0 or above)
+-   Press ` when ingame
+-   Go to server/client console
+-   Write your scripts in the "enter code here" textbox
+
+# Internal workings
 
 The environment is a recent version of Luau compiled back into Luau and ran with a virtual machine.
 Only some globals are exposed, meaning `game` is not available. Instead you have to use sandboxed functions.
 Below is a list of them.
+
+# Errors
+
+Errors made by the VM are currently far less readable than default Luau output.
 
 ## Shared globals
 
@@ -75,7 +115,7 @@ print("hello world") -- self explanatory
 console_clear() -- clears the console output
 ```
 
-## Server
+## Server globals
 
 ### require
 
@@ -86,6 +126,35 @@ set_require_domain("https://raw.githubusercontent.com/blackshibe/deadline-insitu
 -- actually requires https://raw.githubusercontent.com/blackshibe/deadline-insitux-core-scripts/master/luau/server/gamemode_setup.lua
 require("luau/server/gamemode_setup.lua")
 require("luau/server/vip_command_bot.lua")
+```
+
+### map
+
+````luau
+
+-- ServerMap - for managing the maps
+
+map.set_map("shipment") -- changes the map immediately, kills all players
+map.set_preset("shipment") -- changes the preset. available presets are in config.lighting_presets
+
+local voted_map = map.run_vote() -- runs a vote for a random map. returns a game config for that map
+map.set_map_from_config(config.maps.MAP_CONFIGURATION[voted_map]); -- sets the map, gamemode, and time from a config
+
+```
+
+### gamemode
+
+```luau
+
+gamemode.set_gamemode("koth") -- sets the gamemode
+gamemode.force_set_gamemode("koth") -- sets the gamemode without changing the map(?)
+
+gamemode.finished:Connect(function(avoid_resetting_map)
+end) -- fires when a game ends
+
+gamemode.started:Connect(function()
+end) -- fires when a game starts
+
 ```
 
 ### chat, text
@@ -112,7 +181,7 @@ end)
 set_spawning_disabled_reason("Reason why spawning is disabled") --> when players can't spawn this text will show up filtered in a prompt
 sharedvars.sv_spawning_enabled = false
 
-```
+````
 
 ### config
 
@@ -144,8 +213,41 @@ end
 load_modfile("DATA") --> loads a modfile to the game
 ```
 
-## Client
+### networking
+
+```luau
+
+-- ...from the client
+fire_server(1)
+
+-- ...on the server
+on_client_event:Connect(function(player, args)
+	print(player, args)
+end)
 
 ```
+
+## Client globals
+
+### general
+
+```luau
+print(local_player) -- prints the local_player's name
+```
+
+### config
+
+```luau
+
+-- the config table is different on the client. it has sounds that can be replaced directly
+for name, value in pairs(config.gunshots) do
+	print(name, value)
+	config.gunshots[name] = "rbxassetid://funny sound" -- it can be replaced
+end
+
+-- same for most game sounds
+for name, value in pairs(config.game_sounds) do
+	print(name, value) -- table of tables
+end
 
 ```
