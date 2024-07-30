@@ -130,7 +130,7 @@ require("luau/server/vip_command_bot.lua")
 
 ### map
 
-````luau
+```luau
 
 -- ServerMap - for managing the maps
 
@@ -181,7 +181,7 @@ end)
 set_spawning_disabled_reason("Reason why spawning is disabled") --> when players can't spawn this text will show up filtered in a prompt
 sharedvars.sv_spawning_enabled = false
 
-````
+```
 
 ### config
 
