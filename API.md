@@ -144,8 +144,8 @@ map.set_time(10) -- sets the time 10AM (not including sharedvars.sv_time_offset)
 sharedvars.sv_time_offset = 10 -- moves the time by 10 hours
 
 -- show available maps
-for name in map.get_maps() do
-    print(name)
+for name, value in map.get_maps() do
+    print(name, value)
 end
 
 ```
