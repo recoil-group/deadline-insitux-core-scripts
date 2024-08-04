@@ -140,6 +140,9 @@ map.set_preset("shipment") -- changes the preset. available presets are in confi
 local voted_map = map.run_vote() -- runs a vote for a random map. returns a game config for that map
 map.set_map_from_config(config.maps.MAP_CONFIGURATION[voted_map]); -- sets the map, gamemode, and time from a config
 
+map.set_time(10) -- sets the time 10AM (not including sharedvars.sv_time_offset)
+sharedvars.sv_time_offset = 10 -- moves the time by 10 hours
+
 ```
 
 ### gamemode
@@ -203,6 +206,22 @@ end
 
 -- these can be used for maps' sound_preset property
 for name, data in pairs(config.sound_presets) do
+    print(name)
+end
+```
+
+### game data
+
+```luau
+
+-- game data includes current game state (map, gamemode, so on)
+print(game_data.lighting.value) -- print current lighting
+print(game_data.map_properties.lighting_preset) -- or this way
+
+print(game_data.map_properties.map_config) -- print map config
+
+-- to show all values
+for name, data in pairs(game_data) do
     print(name)
 end
 ```
