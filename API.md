@@ -143,6 +143,11 @@ map.set_map_from_config(config.maps.MAP_CONFIGURATION[voted_map]); -- sets the m
 map.set_time(10) -- sets the time 10AM (not including sharedvars.sv_time_offset)
 sharedvars.sv_time_offset = 10 -- moves the time by 10 hours
 
+-- show available maps
+for name in map.get_maps() do
+    print(name)
+end
+
 ```
 
 ### gamemode
@@ -151,6 +156,11 @@ sharedvars.sv_time_offset = 10 -- moves the time by 10 hours
 
 gamemode.set_gamemode("koth") -- sets the gamemode
 gamemode.force_set_gamemode("koth") -- sets the gamemode without changing the map(?)
+
+-- show available gamemodes
+for name in gamemode.available_gamemodes do
+    print(name)
+end
 
 gamemode.finished:Connect(function(avoid_resetting_map)
 end) -- fires when a game ends
