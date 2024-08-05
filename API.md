@@ -86,6 +86,19 @@ time.play_sound(sound_instance)
 time.wait(5)
 ```
 
+### tags
+
+```luau
+
+-- you can access the position and size data of CollectionService tagged instances in your maps with the tags namespace.
+
+print(tags.get_tags()) --> returns a list of every tag used by the game
+print(tags.get_tagged("_killbox")) --> returns a list of every part tagged with _killbox.
+-- parts will have position, name, orientation, position, and size defined
+-- everything else only has name at the moment
+
+```
+
 ### sharedvars
 
 ```luau
@@ -193,6 +206,42 @@ end)
 
 set_spawning_disabled_reason("Reason why spawning is disabled") --> when players can't spawn this text will show up filtered in a prompt
 sharedvars.sv_spawning_enabled = false
+
+```
+
+### players
+
+```luau
+
+-- you can access player data from luau
+-- this script kills anyone who steps inside a part tagged with "deleteme"
+
+local function is_point_inside_part(point, part)
+	local offset = part.cframe:pointToObjectSpace(point)
+	return math.abs(offset.X) <= part.size.X / 2
+		and math.abs(offset.Y) <= part.size.Y / 2
+		and math.abs(offset.Z) <= part.size.Z / 2
+end
+
+time.heartbeat("check_killbox", function()
+	for _, killbox in pairs(tags.get_tagged("kill_box")) do
+		for _, player in pairs(get_players()) do
+			local position = player.get_position()
+
+			if not position then
+				continue
+			end
+
+			if is_point_inside_part(position, killbox) then
+				player.kill()
+                print("killed", player.name)
+			end
+		end
+	end
+end)
+
+-- you can also do this
+get_player("MyName").kill()
 
 ```
 
