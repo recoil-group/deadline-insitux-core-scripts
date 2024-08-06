@@ -121,6 +121,18 @@ print(sharedvars.chat_tips_enabled) -- false
 
 ```
 
+### shared
+
+```luau
+
+-- this is just persistent script storage
+shared.value = 5
+
+-- from another script
+print(shared.value) --> 5
+
+```
+
 ### console
 
 ```luau
