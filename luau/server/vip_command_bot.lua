@@ -76,6 +76,26 @@ commands = {
 
 		return "Time set to " .. time
 	end,
+	outfit = function(time)
+		local allowed = {
+			"orchids_shark_set",
+			"orchids_pbr_set",
+			"main",
+		}
+
+		if not table.find(time, allowed) then
+			local str = "Invalid outfit. Available outfits:\n"
+			for _, outfit in pairs(allowed) do
+				str = str .. outfit .. " "
+			end
+
+			return str
+		end
+
+		sharedvars.plr_model = time
+
+		return "Outfit set to " .. time
+	end,
 }
 
 -- when player sends something in the chat, check if it's a command

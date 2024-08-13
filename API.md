@@ -252,8 +252,15 @@ time.heartbeat("check_killbox", function()
 	end
 end)
 
--- you can also do this
-get_player("MyName").kill()
+local player = get_player("MyName")
+
+-- functions:
+player.kill()
+player.explode()
+player.kick()
+player.set_team("defender")
+player.set_team("attacker")
+player.spawn()
 
 ```
 
