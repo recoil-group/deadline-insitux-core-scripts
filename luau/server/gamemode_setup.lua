@@ -1,6 +1,8 @@
 ---@diagnostic disable: undefined-global
 
--- this script loads the map configuration for every match
+-- author: blackshibe
+-- version: 0.23.0 dev
+-- description: loads the map configuration and runs gamemode voting for every match
 
 local shooting_range_config = config.maps.SHOOTING_RANGE_CONFIGURATION
 local map_config = config.maps.MAP_CONFIGURATION

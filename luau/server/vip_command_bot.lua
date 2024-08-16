@@ -1,5 +1,9 @@
 ---@diagnostic disable: undefined-global
 
+-- author: blackshibe
+-- version: 0.23.0 dev
+-- description: runs a VIP server bot
+
 if not is_private_server() and not is_studio() then
 	return
 end
