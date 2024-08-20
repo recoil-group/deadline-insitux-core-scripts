@@ -237,8 +237,8 @@ end
 
 time.heartbeat("check_killbox", function()
 	for _, killbox in pairs(tags.get_tagged("kill_box")) do
-		for _, player in pairs(get_players()) do
-			local position = player.get_position()
+		for _, player in pairs(get_players()) do -- or get_alive_players
+			local position = player.get_position() -- returns nil if the player is dead
 
 			if not position then
 				continue
@@ -260,14 +260,40 @@ player.explode()
 player.kick()
 player.set_team("defender")
 player.set_team("attacker")
-player.spawn()
+player.spawn() -- spawns the player if they are not already spawned
 
 -- overrides
+player.set_position(Vector3.new(0, 1000, 0))
+player.set_position(tags.get_tagged("spawn_point")[0].position)
+
 player.set_speed(5)
-player.set_initial_health(200)
+player.set_health(200)
+player.set_initial_health(200) -- doesn't work immediately
 player.set_camera_mode("Freecam")
 player.set_model("orchids_pbr_set")
+player.ban_from_server() -- works same as votekicking someone
+player.refill_ammo()
 
+-- import weapon from a code
+local setup = get_setup_from_code("4f42-02212-zh1g-3oaa-ozhz-z3nb-caa9-61wo") -- setup only works in dev branch
+
+if setup.status ~= "_" then
+    warn("setup is not valid")
+else
+	-- 1st argument is primary, secondary, throwable1, throwable2
+    player.set_weapon("primary", "M4A1", setup.data)
+end
+
+-- or from the player loadout
+-- 1st argument is loadout number, starts from 0, 1 is 2nd loadout
+-- 2nd argument is primary, secondary, throwable1, throwable2
+local loadout_data = player.get_weapon_from_loadout(1, "primary")
+player.set_weapon("secondary", loadout_data.weapon, loadout_data.data)
+
+-- or you can just save the setup to a string
+-- this doesn't work right now because you can't copy the setup after printing it lmao
+local data = "... JSON"
+player.set_weapon("secondary", "M4A1", data)
 ```
 
 ### config
