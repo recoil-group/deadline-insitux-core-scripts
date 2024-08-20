@@ -12,6 +12,7 @@ local prefix = "-"
 local commands
 
 local map_list = map.get_maps()
+local override_setup
 
 commands = {
 	help = function()
@@ -22,6 +23,7 @@ commands = {
 
 		return result:sub(1, -3)
 	end,
+
 	lighting = function(lighting)
 		if not config.lighting_presets[lighting] then
 			local str = "Invalid lighting. Available lighting presets:"
@@ -36,6 +38,7 @@ commands = {
 
 		return "Lighting set to " .. lighting
 	end,
+
 	map = function(map_name)
 		if not table.find(map_list, map_name) then
 			local str = "Invalid map. Available maps:"
@@ -50,6 +53,7 @@ commands = {
 
 		return "Map set to " .. map_name
 	end,
+
 	gamespeed = function(speed)
 		speed = tonumber(speed)
 
@@ -61,11 +65,34 @@ commands = {
 
 		return "Game speed set to " .. speed
 	end,
+
 	pvp = function()
 		sharedvars.plr_pvp = not sharedvars.plr_pvp
 
 		return "PvP " .. (sharedvars.plr_pvp and "enabled" or "disabled")
 	end,
+
+	gravity = function(gravity)
+		if not gravity then
+			return "Please provide a gravity value"
+		end
+
+		gravity = tonumber(gravity)
+		if not gravity then
+			return "Invalid gravity"
+		end
+
+		sharedvars.sv_gravity = gravity
+
+		return "Time set to " .. gravity
+	end,
+
+	nogunlimits = function(gravity)
+		sharedvars.editor_compatibility_checks = false
+		sharedvars.editor_mount_anything = true
+		return "Disabled gun limits"
+	end,
+
 	time = function(time)
 		if not time then
 			return "Please provide a time"
@@ -80,14 +107,15 @@ commands = {
 
 		return "Time set to " .. time
 	end,
-	outfit = function(time)
+
+	outfit = function(outfits)
 		local allowed = {
 			"orchids_shark_set",
 			"orchids_pbr_set",
 			"main",
 		}
 
-		if not table.find(time, allowed) then
+		if not table.find(allowed, outfits) then
 			local str = "Invalid outfit. Available outfits:\n"
 			for _, outfit in pairs(allowed) do
 				str = str .. outfit .. " "
@@ -99,6 +127,32 @@ commands = {
 		sharedvars.plr_model = time
 
 		return "Outfit set to " .. time
+	end,
+
+	spawngun = function(args)
+		local args_split = args:split(" ")
+		local weapon = args_split[1]
+		local code = args_split[2]
+
+		if not weapon then
+			return "Please provide a weapon"
+		end
+
+		if not code then
+			return "Please provide a weapon setup code"
+		end
+
+		local setup = get_setup_from_code(code)
+		if setup.status ~= "_" then
+			return "Invalid weapon setup code"
+		end
+
+		override_setup = {
+			data = setup.data,
+			weapon = weapon,
+		}
+
+		return "Set spawning weapon"
 	end,
 }
 
@@ -122,6 +176,15 @@ chat.player_chatted:Connect(function(sender, channel, content)
 	local result = commands[command](content:sub(#command + 3, -1))
 
 	chat.send_announcement(result)
+end)
+
+on_player_spawned:Connect(function(name)
+	if not override_setup then
+		return
+	end
+
+	local player = get_player(name)
+	player.set_weapon("primary", override_setup.weapon, override_setup.data)
 end)
 
 chat.send_announcement('type "-help" to view VIP server commands')

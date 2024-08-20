@@ -274,6 +274,10 @@ player.set_model("orchids_pbr_set")
 player.ban_from_server() -- works same as votekicking someone
 player.refill_ammo()
 
+on_player_spawned:Connect(function(name)
+	print("played spawned:", name)
+end)
+
 -- import weapon from a code
 local setup = get_setup_from_code("4f42-02212-zh1g-3oaa-ozhz-z3nb-caa9-61wo") -- setup only works in dev branch
 
