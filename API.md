@@ -262,6 +262,12 @@ player.set_team("defender")
 player.set_team("attacker")
 player.spawn()
 
+-- overrides
+player.set_speed(5)
+player.set_initial_health(200)
+player.set_camera_mode("Freecam")
+player.set_model("orchids_pbr_set")
+
 ```
 
 ### config
