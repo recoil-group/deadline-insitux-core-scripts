@@ -278,6 +278,12 @@ on_player_spawned:Connect(function(name)
 	print("played spawned:", name)
 end)
 
+on_player_died:Connect(function(name, killer_data, stats_counted)
+	-- mostly same data the game uses
+
+	print(name, "died to", killer_data.type) -- can be burning, drowning, firearm, grenade, map_reset, other, reset
+end)
+
 -- import weapon from a code
 local setup = get_setup_from_code("4f42-02212-zh1g-3oaa-ozhz-z3nb-caa9-61wo") -- setup only works in dev branch
 
