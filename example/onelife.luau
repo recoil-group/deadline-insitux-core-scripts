@@ -21,10 +21,16 @@ local chat_messaged = chat.player_chatted:Connect(function(sender, channel, cont
 			return
 		end
 
+		chat.send_announcement(`respawning...`)
 		for _, player in pairs(get_players()) do
-			player.set_camera_mode("Default")
-			player.set_speed(1)
-			player.respawn()
+			-- this MAYBE yields? i don't remember
+			-- but the script was broken
+			task.spawn(function()
+				player.set_camera_mode("Default")
+				player.set_speed(1)
+				player.spawn()
+			end)
+
 			dead_players[player.name] = nil
 		end
 	end
