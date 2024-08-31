@@ -274,6 +274,9 @@ player.set_model("orchids_pbr_set")
 player.ban_from_server() -- works same as votekicking someone
 player.refill_ammo()
 
+player.equip_weapon("secondary", true) -- immediately forces the player to equip their secondary
+player.equip_weapon("throwable1") -- forces the player to switch to their 1st grenade
+
 on_player_spawned:Connect(function(name)
 	print("played spawned:", name)
 end)
@@ -304,6 +307,7 @@ player.set_weapon("secondary", loadout_data.weapon, loadout_data.data)
 -- this doesn't work right now because you can't copy the setup after printing it lmao
 local data = "... JSON"
 player.set_weapon("secondary", "M4A1", data)
+
 ```
 
 ### config
