@@ -3,10 +3,10 @@
 -- description: kills anyone who steps inside a part tagged with "deleteme". works on custom maps
 
 local function is_point_inside_part(point, part)
-	local offset = part.cframe:pointToObjectSpace(point)
-	return math.abs(offset.X) <= part.size.X / 2
-		and math.abs(offset.Y) <= part.size.Y / 2
-		and math.abs(offset.Z) <= part.size.Z / 2
+	local offset = part.CFrame:pointToObjectSpace(point)
+	return math.abs(offset.X) <= part.Size.X / 2
+		and math.abs(offset.Y) <= part.Size.Y / 2
+		and math.abs(offset.Z) <= part.Size.Z / 2
 end
 
 time.heartbeat("check_killbox", function()

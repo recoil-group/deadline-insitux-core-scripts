@@ -260,6 +260,7 @@ player.explode()
 player.kick()
 player.set_team("defender")
 player.set_team("attacker")
+print(player.get_team()) --> attacker
 player.spawn() -- spawns the player if they are not already spawned
 
 -- overrides
@@ -278,7 +279,15 @@ player.equip_weapon("secondary", true) -- immediately forces the player to equip
 player.equip_weapon("throwable1") -- forces the player to switch to their 1st grenade
 
 on_player_spawned:Connect(function(name)
-	print("played spawned:", name)
+	print("player spawned:", name)
+end)
+
+on_player_joined:Connect(function(name)
+	print("player joined:", name)
+end)
+
+on_player_left:Connect(function(name)
+	print("player left:", name)
 end)
 
 on_player_died:Connect(function(name, killer_data, stats_counted)
@@ -308,6 +317,8 @@ player.set_weapon("secondary", loadout_data.weapon, loadout_data.data)
 local data = "... JSON"
 player.set_weapon("secondary", "M4A1", data)
 
+-- spawns an M67 grenade explosion
+spawn_explosion(Vector3.new(0, 100, 0))
 ```
 
 ### config
