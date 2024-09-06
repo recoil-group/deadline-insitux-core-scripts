@@ -1,6 +1,6 @@
 -- author: blackshibe
 -- version: 0.23.0 dev
--- description: kills anyone who steps inside a part tagged with "deleteme". works on custom maps
+-- description: kills anyone who steps inside a part tagged with "kill_box". works on custom maps
 
 local function is_point_inside_part(point, part)
 	local offset = part.CFrame:pointToObjectSpace(point)

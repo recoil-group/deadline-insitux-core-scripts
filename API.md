@@ -379,6 +379,14 @@ on_client_event:Connect(function(player, args)
 	print(player, args)
 end)
 
+-- ... from the server
+get_player("me").fire_client(123)
+
+-- ... on the client
+on_server_event:Connect(function(args)
+	print(args)
+end)
+
 ```
 
 ## Client globals
