@@ -50,6 +50,32 @@ Errors made by the VM are currently far less readable than default Luau output.
 
 ## Shared globals
 
+### classes
+
+```luau
+
+-- the timer class
+-- it allows you to fire an event once per 5 seconds while running in renderstep
+local timer = Timer.new(5)
+local connection;
+
+connection = time.renderstep("my script label", function(delta_time)
+	if timer:expired() then
+		timer:reset()
+		connection:Disconnect()
+
+		print('5 seconds passed')
+	end
+end)
+
+-- spring class
+-- it's just a spring implementation
+local spring = Spring.new(0.8, 40, 6, 1.9)
+spring:shove(Vector3.new(10, 0, 0))
+spring:update(delta_time)
+
+```
+
 ### time
 
 ```luau
@@ -105,6 +131,8 @@ print(tags.get_tagged("_killbox")) --> returns a list of every part tagged with 
 
 -- The game has a list of variables that control the game settings for different players. They are called in a table called shared state.
 -- sharedvars and sharedvars_descriptions exposes this in a simple API
+-- the game has over 100 changeable settings. Check them to make sure
+-- what you might want to do isn't already configurable.
 
 for name, description in pairs(sharedvars_descriptions) do
     print(name, description) --> prints every sharedvars value
@@ -317,6 +345,9 @@ player.set_weapon("secondary", loadout_data.weapon, loadout_data.data)
 local data = "... JSON"
 player.set_weapon("secondary", "M4A1", data)
 
+-- or you can just remove their gun
+player.set_weapon("secondary", "nothing")
+
 -- spawns an M67 grenade explosion
 spawn_explosion(Vector3.new(0, 100, 0))
 ```
@@ -412,6 +443,109 @@ for name, value in pairs(config.game_sounds) do
 	print(name, value) -- table of tables
 end
 
+```
+
+### inputs
+
+```luau
+-- this module abstracts game input
+
+print(input.get_mouse_delta()) -- equivalent to UserInputService:GetMouseDelta()
+print(input.get_mouse_sensitivity()) -- gets the player sensitivity settings
+
+-- InputGroup is also exposed, as well as ClientInputGroup
+-- the input code is a table index to config.keybinds
+
+-- ClientInputGroup uses client settings
+local client_input_group = ClientInputGroup.new()
+local input_group = InputGroup.new()
+
+client_input_group:bind_user_setting(function()
+	print("started pressing W")
+end, InputType.Began, "move_forward")
+
+client_input_group:bind_user_setting(function()
+	print("stopped pressing W")
+end, InputType.Ended, "move_forward")
+
+input_group:bind_key(function()
+		print("pressed f")
+	end,
+	InputType.Began,
+	false,           -- ignore game processed
+	Enum.KeyCode.F   -- keycode
+)
+
+input_group:bind_key(function()
+		print("stopped pressing f")
+	end,
+	InputType.Ended,
+	false,           -- ignore game processed
+	Enum.KeyCode.F   -- keycode
+)
+
+client_input_group:disconnect_all_binds()
+input_group:disconnect_all_binds()
+```
+
+### camera control
+
+```luau
+
+-- you can register a custom camera controller
+-- author: blackshibe
+-- version: 0.23.0 dev
+-- description: creates a class and registers it as a custom camera controller component
+
+local CustomFreecam = {}
+CustomFreecam.__index = CustomFreecam
+
+function CustomFreecam.new(get_head_cframe)
+	local self = {
+		get_head_cframe = get_head_cframe,
+
+		cam_position = CFrame.new(-35.25, 135.662, 8.242),
+		rot_x = 0,
+		rot_y = 0,
+
+		min_roll = -math.pi / 2 + 0.2,
+		max_roll = math.pi / 2 - 0.2,
+	}
+
+	return setmetatable(self, CustomFreecam)
+end
+
+function CustomFreecam:update(delta_time)
+	local mouse_delta = input.get_mouse_delta() * 0.0075 * input.get_mouse_sensitivity()
+	local camera_cframe = self.cam_position
+
+	self.rot_y -= mouse_delta.Y
+	self.rot_y = math.clamp(self.rot_y, self.min_roll, self.max_roll)
+	self.rot_x -= mouse_delta.X
+
+	camera_cframe *= CFrame.Angles(0, self.rot_x, 0) * CFrame.Angles(self.rot_y, 0, 0) * CFrame.Angles(
+		0,
+		0,
+		-self.roll or 0
+	)
+
+	camera_cframe = camera_cframe:ToWorldSpace(
+		CFrame.new(
+			-self.input.movementX * delta_time * 90,
+			self.input.movementZ * delta_time * 90,
+			-self.input.movementY * delta_time * 90
+		)
+	)
+
+	self.camera_cframe = camera_cframe
+	self.cam_position = CFrame.new(camera_cframe.Position)
+end
+
+-- can also use Default to overwrite default cameramode
+register_camera_mode("CustomFreecam", CustomFreecam)
+
+-- on the server
+get_player("me").set_custom_camera_mode("CustomFreecam")
 ```
 
 ### ui
