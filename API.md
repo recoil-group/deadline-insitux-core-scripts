@@ -105,9 +105,6 @@ time.delay(5, function()
 
 end)
 
--- this is a replacement for Sound.Play() that affects sound speed by the game speed
-time.play_sound(sound_instance)
-
 -- replacement for task.wait() affected by game speed
 time.wait(5)
 ```
@@ -123,6 +120,23 @@ print(tags.get_tagged("_killbox")) --> returns a list of every part tagged with 
 -- parts will have position, name, orientation, position, and size defined
 -- everything else only has name at the moment
 
+```
+
+### instance
+
+```luau
+
+-- there is a wrapped luau instance which allows editing most properties of instances
+-- returns a metatable with some functions
+
+local sound = tags.get_tagged("sound_alarm")[1]
+sound.play() -- for playing sound
+
+-- works
+sound.Volume = 0.5
+
+-- method and instance properties don't work
+print(sound.Parent)
 ```
 
 ### sharedvars
