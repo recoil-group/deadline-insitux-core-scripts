@@ -1,3 +1,7 @@
+-- author: blackshibe
+-- version: 0.23.0 dev
+-- description: custom camera mode that allows for free movement and rotation
+
 local CustomFreecam = {}
 CustomFreecam.__index = CustomFreecam
 

@@ -179,7 +179,7 @@ print(shared.value) --> 5
 
 ```luau
 print("hello world") -- self explanatory
-console_clear() -- clears the console output
+clear_console() -- clears the console output
 ```
 
 ## Server globals
@@ -258,8 +258,14 @@ chat.player_chatted:Connect(function(sender, channel, content)
 	chat.send_announcement(str, Color3.fromRGB(227, 93, 244)) -- chat.send_announcement - sends an announcement in the chat
 end)
 
-set_spawning_disabled_reason("Reason why spawning is disabled") --> when players can't spawn this text will show up filtered in a prompt
+chat.set_spawning_disabled_reason("Reason why spawning is disabled") --> when players can't spawn this text will show up filtered in a prompt
 sharedvars.sv_spawning_enabled = false
+
+-- sends an ingame notification text to players
+chat.send_ingame_notification("Hello world")
+
+-- lol
+sound.play_sick_riff()
 
 ```
 
@@ -279,7 +285,7 @@ end
 
 time.heartbeat("check_killbox", function()
 	for _, killbox in pairs(tags.get_tagged("kill_box")) do
-		for _, player in pairs(get_players()) do -- or get_alive_players
+		for _, player in pairs(players.get_all()) do -- or players.get_alive
 			local position = player.get_position() -- returns nil if the player is dead
 
 			if not position then
@@ -294,7 +300,7 @@ time.heartbeat("check_killbox", function()
 	end
 end)
 
-local player = get_player("MyName")
+local player = players.get("MyName")
 
 -- functions:
 player.kill()
@@ -304,6 +310,7 @@ player.set_team("defender")
 player.set_team("attacker")
 print(player.get_team()) --> attacker
 player.spawn() -- spawns the player if they are not already spawned
+player.respawn() -- force respawns the player, even if they are already spawned
 
 -- overrides
 player.set_position(Vector3.new(0, 1000, 0))
@@ -316,6 +323,7 @@ player.set_camera_mode("Freecam")
 player.set_model("orchids_pbr_set")
 player.ban_from_server() -- works same as votekicking someone
 player.refill_ammo()
+player.get_leaderboard_stats() -- returns player leaderboard stats
 
 player.equip_weapon("secondary", true) -- immediately forces the player to equip their secondary
 player.equip_weapon("throwable1") -- forces the player to switch to their 1st grenade
@@ -339,7 +347,7 @@ on_player_died:Connect(function(name, killer_data, stats_counted)
 end)
 
 -- import weapon from a code
-local setup = get_setup_from_code("4f42-02212-zh1g-3oaa-ozhz-z3nb-caa9-61wo") -- setup only works in dev branch
+local setup = weapons.get_setup_from_code("4f42-02212-zh1g-3oaa-ozhz-z3nb-caa9-61wo") -- setup only works in dev branch
 
 if setup.status ~= "_" then
     warn("setup is not valid")
@@ -363,7 +371,11 @@ player.set_weapon("secondary", "M4A1", data)
 player.set_weapon("secondary", "nothing")
 
 -- spawns an M67 grenade explosion
-spawn_explosion(Vector3.new(0, 100, 0))
+spawning.explosion(Vector3.new(0, 100, 0))
+
+-- deletes all ragdolls
+players.reset_ragdolls()
+
 ```
 
 ### config
@@ -425,7 +437,7 @@ on_client_event:Connect(function(player, args)
 end)
 
 -- ... from the server
-get_player("me").fire_client(123)
+players.get("me").fire_client(123)
 
 -- ... on the client
 on_server_event:Connect(function(args)
@@ -502,6 +514,45 @@ client_input_group:disconnect_all_binds()
 input_group:disconnect_all_binds()
 ```
 
+### interactables
+
+```lua
+-- the game has interactable items such as ammo refills, doors, light switches and weapons (wip)
+-- you can override their behavior or create new ones here
+
+local CustomInteractable = {}
+CustomInteractable.__index = CustomInteractable
+
+function CustomInteractable.new(instance)
+	local self = {
+		players_killed = 0,
+		instance = instance,
+	}
+
+	return setmetatable(self, CustomInteractable)
+end
+
+function CustomInteractable:interact(player)
+	self.players_killed += 1
+	player.explode()
+	player.kill()
+	chat.send_announcement(`{self.players_killed} players killed total`)
+end
+
+-- replaces all ammo refill interactables in usual maps with this custom logic
+-- doors use "door"
+register_interactable("ammo_refill", CustomInteractable)
+register_interactable("capture_refill", CustomInteractable)
+
+-- any model that has an Attachment instance named display_point, and an attribute called
+-- "interactable_type" set to "part_killer" will have a pop up UI show that runs this code
+-- when interacted with
+register_interactable("part_killer", CustomInteractable)
+
+-- the map has to be reloaded before they work
+map.set_map("misc_shooting_range")
+```
+
 ### camera control
 
 ```luau
@@ -559,7 +610,7 @@ end
 register_camera_mode("CustomFreecam", CustomFreecam)
 
 -- on the server
-get_player("me").set_custom_camera_mode("CustomFreecam")
+players.get("me").set_custom_camera_mode("CustomFreecam")
 ```
 
 ### ui
@@ -619,7 +670,7 @@ ui.render({
 				type = "button",
                 text = "clear console",
 				callback = function()
-                    console_clear()
+                    clear_console()
 					-- can also do network comms here
 					fire_server("clear console idk")
 				end,
