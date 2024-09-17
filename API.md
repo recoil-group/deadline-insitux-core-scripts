@@ -38,6 +38,11 @@ There is one for the client and server. The client can change sounds played by t
 -   Go to server/client console
 -   Write your scripts in the "enter code here" textbox
 
+# Running code
+
+VIP servers can run code in the console. You can also use autorun, which is a script that will run
+every time the VIP server starts, allowing you to have servers set themselves up without your involvement.
+
 # Internal workings
 
 The environment is a recent version of Luau compiled back into Luau and ran with a virtual machine.
@@ -375,6 +380,22 @@ spawning.explosion(Vector3.new(0, 100, 0))
 
 -- deletes all ragdolls
 players.reset_ragdolls()
+
+```
+
+### spawning
+
+```luau
+
+-- you can spawn game objects
+
+-- spawns an M67 grenade explosion
+spawning.explosion(Vector3.new(0, 100, 0))
+
+-- spawns a bot
+spawning.bot()
+
+-- ...
 
 ```
 
