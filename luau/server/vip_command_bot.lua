@@ -188,3 +188,4 @@ on_player_spawned:Connect(function(name)
 end)
 
 chat.send_announcement('type "-help" to view VIP server commands')
+print("the default vip server script is running. type -help in the chat to view VIP server commands.")
