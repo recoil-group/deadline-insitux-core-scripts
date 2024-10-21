@@ -139,10 +139,10 @@ commands = {
 		end
 
 		if not code then
-			return "Please provide a weapon setup code"
+			return "Please provide a weapon and setup code, e.g. -spawngun M4A1 3z4n-0230-aqb6-6acg-h27f-a37g-ded5-3mhf"
 		end
 
-		local setup = get_setup_from_code(code)
+		local setup = weapons.get_setup_from_code(code)
 		if setup.status ~= "_" then
 			return "Invalid weapon setup code"
 		end
@@ -168,13 +168,11 @@ chat.player_chatted:Connect(function(sender, channel, content)
 
 	-- use the command without the prefix
 	command = command:sub(2, -1)
-
 	if not commands[command] then
 		return
 	end
 
 	local result = commands[command](content:sub(#command + 3, -1))
-
 	chat.send_announcement(result)
 end)
 
@@ -183,7 +181,7 @@ on_player_spawned:Connect(function(name)
 		return
 	end
 
-	local player = get_player(name)
+	local player = players.get(name)
 	player.set_weapon("primary", override_setup.weapon, override_setup.data)
 end)
 
