@@ -393,7 +393,8 @@ players.reset_ragdolls()
 spawning.explosion(Vector3.new(0, 100, 0))
 
 -- spawns a bot
-spawning.bot()
+-- they are treated like regular players, but right now don't do anything but walk towards people
+local bot_name = spawning.bot()
 
 -- ...
 
