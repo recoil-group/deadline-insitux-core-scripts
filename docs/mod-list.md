@@ -12,6 +12,7 @@ Mods and their source available on this website.
 | Template map     | [template_map.luau](example/modfile/template_map.luau) | [map_template_map.rbxl](example/source/map_template_map.rbxl)           |
 | Test map         | [mod_testmap.luau](example/modfile/mod_testmap.luau)   | [map_mod_testmap.rbxl](example/source/map_mod_testmap.rbxl)             |
 | Pool day         | [pool_day.luau](example/modfile/pool_day.luau)         | [map_pool_day.rbxl](example/source/map_pool_day.rbxl)                   |
+| Autorun test     | [mod_autorun.luau](example/modfile/mod_autorun.luau)   | [map_pool_day.rbxl](example/source/map_autorun_test.rbxl)               |
 
 ## Scripts
 
