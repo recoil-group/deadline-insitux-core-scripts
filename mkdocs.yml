@@ -1,0 +1,17 @@
+site_name: Deadline Modding
+repo_url: https://recoil-group.github.io/deadline-modding
+theme:
+    name: material
+    icon:
+        repo: fontawesome/brands/github
+markdown_extensions:
+    - toc
+    - admonition
+    - pymdownx.highlight:
+          anchor_linenums: true
+          line_spans: __span
+          pygments_lang_class: true
+          auto_title: true
+    - pymdownx.inlinehilite
+    - pymdownx.snippets
+    - pymdownx.superfences

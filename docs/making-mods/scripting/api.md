@@ -1,63 +1,12 @@
-# API reference
+# API
 
-There's a new Luau scripting tool available in VIP servers in the dev branch as well as 0.23.0 game versions and onward that exposes functions used by the game directly. Example:
-
-```luau
----@diagnostic disable: undefined-global
-
-if not is_private_server() and not is_studio() then
-    return
-end
-
-local prefix = "/"
-
--- when player sends something in the chat, check if it's a command
-chat.player_chatted:Connect(function(sender, channel, content)
-    local command = content:split(" ")[1]
-    local first_letter = command:sub(1, 1)
-
-    -- if the first letter is the prefix, then it's a command
-    if first_letter ~= prefix then
-        return
-    end
-
-    -- use the command without the prefix
-    command = command:sub(2, -1)
-
-    local str = string.format("hi, %s! Ran command: %s", sender, command)
-    chat.send_announcement(str, Color3.fromRGB(227, 93, 244))
-end)
-```
-
-There is one for the client and server. The client can change sounds played by the game, create custom UI widgets, load map/attachment mods, talk to the server, etc.
-
-# How to
-
--   Get a VIP server in the development branch or main game (0.23.0 or above)
--   Press ` when ingame
--   Go to server/client console
--   Write your scripts in the "enter code here" textbox
-
-# Running code
-
-VIP servers can run code in the console. You can also use autorun, which is a script that will run
-every time the VIP server starts, allowing you to have servers set themselves up without your involvement.
-
-# Internal workings
-
-The environment is a recent version of Luau compiled back into Luau and ran with a virtual machine.
-Only some globals are exposed, meaning `game` is not available. Instead you have to use sandboxed functions.
-Below is a list of them.
-
-# Errors
-
-Errors made by the VM are currently far less readable than default Luau output.
+What you want to to might be already implemented. Just Ctrl+F on this page or use the search feature on the wiki.
 
 ## Shared globals
 
 ### classes
 
-```luau
+```lua
 
 -- the timer class
 -- it allows you to fire an event once per 5 seconds while running in renderstep
@@ -83,7 +32,7 @@ spring:update(delta_time)
 
 ### time
 
-```luau
+```lua
 -- Timescale, used internally by the game
 
 -- this is a replacement for RenderStepped. delta_time is multiplied by game speed
@@ -116,7 +65,7 @@ time.wait(5)
 
 ### tags
 
-```luau
+```lua
 
 -- you can access the position and size data of CollectionService tagged instances in your maps with the tags namespace.
 
@@ -129,7 +78,7 @@ print(tags.get_tagged("_killbox")) --> returns a list of every part tagged with 
 
 ### instance
 
-```luau
+```lua
 
 -- there is a wrapped luau instance which allows editing most properties of instances
 -- returns a metatable with some functions
@@ -146,7 +95,7 @@ print(sound.Parent)
 
 ### sharedvars
 
-```luau
+```lua
 
 -- The game has a list of variables that control the game settings for different players. They are called in a table called shared state.
 -- sharedvars and sharedvars_descriptions exposes this in a simple API
@@ -170,7 +119,7 @@ print(sharedvars.chat_tips_enabled) -- false
 
 ### shared
 
-```luau
+```lua
 
 -- this is just persistent script storage
 shared.value = 5
@@ -182,7 +131,7 @@ print(shared.value) --> 5
 
 ### console
 
-```luau
+```lua
 print("hello world") -- self explanatory
 clear_console() -- clears the console output
 ```
@@ -191,7 +140,7 @@ clear_console() -- clears the console output
 
 ### require
 
-```luau
+```lua
 -- sets the domain for all require() calls
 set_require_domain("https://raw.githubusercontent.com/blackshibe/deadline-insitux-core-scripts/master/")
 
@@ -202,7 +151,7 @@ require("luau/server/vip_command_bot.lua")
 
 ### map
 
-```luau
+```lua
 
 -- ServerMap - for managing the maps
 
@@ -224,7 +173,7 @@ end
 
 ### gamemode
 
-```luau
+```lua
 
 gamemode.set_gamemode("koth") -- sets the gamemode
 gamemode.force_set_gamemode("koth") -- sets the gamemode without changing the map(?)
@@ -244,7 +193,7 @@ end) -- fires when a game starts
 
 ### chat, text
 
-```luau
+```lua
 
 -- ChatManager - for managing the chat
 chat.player_chatted:Connect(function(sender, channel, content)
@@ -276,7 +225,7 @@ sound.play_sick_riff()
 
 ### players
 
-```luau
+```lua
 
 -- you can access player data from luau
 -- this script kills anyone who steps inside a part tagged with "deleteme"
@@ -385,7 +334,7 @@ players.reset_ragdolls()
 
 ### spawning
 
-```luau
+```lua
 
 -- you can spawn game objects
 
@@ -402,7 +351,7 @@ local bot_name = spawning.bot()
 
 ### config
 
-```luau
+```lua
 
 -- config has most game configs
 
@@ -426,7 +375,7 @@ end
 
 ### game data
 
-```luau
+```lua
 
 -- game data includes current game state (map, gamemode, so on)
 print(game_data.lighting.value) -- print current lighting
@@ -442,13 +391,13 @@ end
 
 ### mods
 
-```luau
+```lua
 load_modfile("DATA") --> loads a modfile to the game
 ```
 
 ### networking
 
-```luau
+```lua
 
 -- ...from the client
 fire_server(1)
@@ -472,13 +421,13 @@ end)
 
 ### general
 
-```luau
+```lua
 print(local_player) -- prints the local_player's name
 ```
 
 ### config
 
-```luau
+```lua
 
 -- the config table is different on the client. it has sounds that can be replaced directly
 for name, value in pairs(config.gunshots) do
@@ -495,7 +444,7 @@ end
 
 ### inputs
 
-```luau
+```lua
 -- this module abstracts game input
 
 print(input.get_mouse_delta()) -- equivalent to UserInputService:GetMouseDelta()
@@ -577,7 +526,7 @@ map.set_map("misc_shooting_range")
 
 ### camera control
 
-```luau
+```lua
 
 -- you can register a custom camera controller
 -- author: blackshibe
@@ -637,7 +586,7 @@ players.get("me").set_custom_camera_mode("CustomFreecam")
 
 ### ui
 
-```luau
+```lua
 
 -- you can render simple UIs on the client
 ui.clear()
