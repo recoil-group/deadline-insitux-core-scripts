@@ -284,10 +284,12 @@ player.set_camera_mode("Freecam")
 player.set_model("orchids_pbr_set")
 player.ban_from_server() -- works same as votekicking someone
 player.refill_ammo()
-player.get_leaderboard_stats() -- returns player leaderboard stats
 
 player.equip_weapon("secondary", true) -- immediately forces the player to equip their secondary
 player.equip_weapon("throwable1") -- forces the player to switch to their 1st grenade
+
+print(player.get_profile_stats()) -- lets you get player profile stats
+print(player.get_leaderboard_stats()) -- returns player leaderboard stats
 
 on_player_spawned:Connect(function(name)
 	print("player spawned:", name)
@@ -315,6 +317,25 @@ if setup.status ~= "_" then
 else
 	-- 1st argument is primary, secondary, throwable1, throwable2
     player.set_weapon("primary", "M4A1", setup.data)
+end
+
+-- you can check if it's broken with get_setup_status
+local setup = weapons.get_setup_from_code("cn8q-0231-31bq-zg6d-8m54-g906-o50c-m1f7")
+local status = weapons.get_setup_status(setup.data)
+
+print(status)
+if type(status) ~= "string" then
+	-- all problems unrelated to picatinny
+	for i, v in pairs(status.state) do
+		print(i, v)
+	end
+
+	-- rail problems
+	for _, entry in pairs(status.rail_state.failures) do
+		for i, v in pairs(entry) do
+			print(i, v)
+		end
+	end
 end
 
 -- or from the player loadout
@@ -370,6 +391,8 @@ end
 map.set_map_from_config(config.maps.STUDIO_CONFIGURATION())
 
 -- these can be used with map.set_preset("name")
+-- on the client, you can modify them directly
+-- on the server, you may load new ones for players to use with modfiles
 for name, data in pairs(config.lighting_presets) do
     print(name)
 end
@@ -378,6 +401,17 @@ end
 for name, data in pairs(config.sound_presets) do
     print(name)
 end
+
+-- every weapon in the game
+for _, name in pairs(config.weapon_names) do
+    print(name)
+end
+
+-- every utility in the game
+for _, name in pairs(config.utility_items) do
+    print(name)
+end
+
 ```
 
 ### game data
