@@ -91,6 +91,13 @@ sound.Volume = 0.5
 
 -- method and instance properties don't work
 print(sound.Parent)
+
+-- attributes and tags can be set
+sound.add_tag("tag")
+sound.remove_tag("tag")
+
+sound.set_attribute("attribute", true)
+sound.get_attribute("attribute")
 ```
 
 ### sharedvars
