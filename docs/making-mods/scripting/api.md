@@ -24,6 +24,7 @@ end)
 
 -- spring class
 -- it's just a spring implementation
+--                        mass?: number, force?: number, damping?: number, speed?: number
 local spring = Spring.new(0.8, 40, 6, 1.9)
 spring:shove(Vector3.new(10, 0, 0))
 spring:update(delta_time)
@@ -43,7 +44,7 @@ end)
 c:Disconnect()
 
 -- this is a replacement for Heartbeat. delta_time is multiplied by game speed
-time.renderstep("my script label", function(delta_time)
+time.heartbeat("my script label", function(delta_time)
 
 end)
 
