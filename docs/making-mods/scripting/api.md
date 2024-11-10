@@ -87,6 +87,11 @@ print(tags.get_tagged("_killbox")) --> returns a list of every part tagged with 
 local sound = tags.get_tagged("sound_alarm")[1]
 sound.play() -- for playing sound
 
+-- cloning instances
+local clone = sound.clone()
+clone.Parent = sound
+clone.destroy()
+
 -- works
 sound.Volume = 0.5
 
@@ -262,7 +267,7 @@ time.heartbeat("check_killbox", function()
 	end
 end)
 
-local player = players.get("MyName")
+local player = players.get("MyName") or players.get_by_userid(1000)
 
 -- functions:
 player.kill()
@@ -304,7 +309,7 @@ on_player_left:Connect(function(name)
 	print("player left:", name)
 end)
 
-on_player_died:Connect(function(name, killer_data, stats_counted)
+on_player_died:Connect(function(name, position, killer_data, stats_counted)
 	-- mostly same data the game uses
 
 	print(name, "died to", killer_data.type) -- can be burning, drowning, firearm, grenade, map_reset, other, reset
@@ -525,6 +530,14 @@ input_group:bind_key(function()
 
 client_input_group:disconnect_all_binds()
 input_group:disconnect_all_binds()
+
+-- every keybind is available here. you may or may not be able to add custom ones
+for i, v in pairs(config.keybinds) do
+	print(i, v)
+end
+
+-- if you do you also have to add an entry for it in the client settings
+table.insert(config.settings_layout.controls, { setting = "toggle_godmode", type = "setting" })
 ```
 
 ### interactables
