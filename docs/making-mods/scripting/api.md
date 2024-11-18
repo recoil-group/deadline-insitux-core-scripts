@@ -87,6 +87,9 @@ print(tags.get_tagged("_killbox")) --> returns a list of every part tagged with 
 local sound = tags.get_tagged("sound_alarm")[1]
 sound.play() -- for playing sound
 
+-- you can also create sounds specifically directly
+local sound = sound.create()
+
 -- cloning instances
 local clone = sound.clone()
 clone.Parent = sound
@@ -94,6 +97,7 @@ clone.destroy()
 
 -- works
 sound.Volume = 0.5
+print(sound.get_tags()) --> returns a list of every tag the instance has
 
 -- method and instance properties don't work
 print(sound.Parent)
@@ -171,8 +175,12 @@ require("luau/server/vip_command_bot.lua")
 map.set_map("shipment") -- changes the map immediately, kills all players
 map.set_preset("shipment") -- changes the preset. available presets are in config.lighting_presets
 
+-- run_vote uses config.maps.MAP_CONFIGURATION. You can add custom entries there
 local voted_map = map.run_vote() -- runs a vote for a random map. returns a game config for that map
 map.set_map_from_config(config.maps.MAP_CONFIGURATION[voted_map]); -- sets the map, gamemode, and time from a config
+
+-- can also just do this
+map.set_map_from_config(config.maps.MAP_CONFIGURATION.shipment_01)
 
 map.set_time(10) -- sets the time 10AM (not including sharedvars.sv_time_offset)
 sharedvars.sv_time_offset = 10 -- moves the time by 10 hours
@@ -496,6 +504,8 @@ end
 
 print(input.get_mouse_delta()) -- equivalent to UserInputService:GetMouseDelta()
 print(input.get_mouse_sensitivity()) -- gets the player sensitivity settings
+print(input.get_mouse_origin()) -- Mouse.Origin
+print(input.get_mouse_position()) -- UserInputService.GetMouseLocation()
 
 -- InputGroup is also exposed, as well as ClientInputGroup
 -- the input code is a table index to config.keybinds
@@ -538,6 +548,15 @@ end
 
 -- if you do you also have to add an entry for it in the client settings
 table.insert(config.settings_layout.controls, { setting = "toggle_godmode", type = "setting" })
+```
+
+### framework
+
+```lua
+-- not many functions for now
+framework.character.is_alive() -- gets whether you're alive
+framework.character.get_position() -- returns character position
+framework.character.get_camera_cframe() -- gets the camera cframe
 ```
 
 ### interactables

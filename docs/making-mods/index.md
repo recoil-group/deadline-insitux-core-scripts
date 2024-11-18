@@ -19,7 +19,12 @@ Generally, you want to
     -   Open the output (View->Output) to see any errors when exporting
     -   Open the plugin (Plugins->DeadlineSDK in Studio), click on workspace.DeadlineTestMod in the explorer, or the mod folder you have
     -   Click "export selected model as mod" in the plugin menu
+-   Save the mod
+    -   The plugin either prompts you a URL, or prompts to save to a file.
+    -   The URL is a link to your mod source that you can load **ONLY ONCE.**. CTRl+A the contents of it and save it somewhere else.
+    -   If it's a file, it's already saved where you chose to do it.
 -   Get a private Deadline server
     -   Dev branch and 0.23.0 VIP servers are free
 -   Load the mod
-    -   Instructions below
+    -   Copy-paste the contents of the mod to the server console tab
+    -   The game will probably freeze. Once done, press enter and the mod will load

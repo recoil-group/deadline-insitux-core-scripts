@@ -13,7 +13,7 @@ To create an interactable object, make a model with the following interactable_t
     -   Has a cooldown
 -   door
     -   Door. Has a very specific, undocumented structure
-    -   Example: [door.rbxm](door.rbxm)
+    -   Example: [door.rbxm](file/door.rbxm)
 -   light_switch
     -   When interacted with, toggles all lights inside the model. Structure is undocumented
 -   custom
