@@ -2,7 +2,7 @@
 
 ## Public mods
 
--   [Official mods](mod-manifest.md)
+-   [Official mods](docs/mod-list.md)
 -   The Deadline server has a #modding channel
 
 ## Starting out
