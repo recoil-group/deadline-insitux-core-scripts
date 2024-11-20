@@ -4,5 +4,5 @@ Deadline has a modding API that lets you customize the game as well as load cust
 
 Available guides are on the left side of the screen or in the sidebar menu.
 
--   [How to use mods](using-mods.md)
--   [How to make mods](making-mods.md)
+-   [How to use mods](https://github.com/recoil-group/deadline-modding/blob/master/docs/using-mods/index.md)
+-   [How to make mods](https://github.com/recoil-group/deadline-modding/blob/master/docs/making-mods/index.md)
