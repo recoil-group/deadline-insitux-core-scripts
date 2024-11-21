@@ -4,7 +4,7 @@ Interactables are objects you can press F on. The game currently has a few.
 
 ## How-to
 
-To create an interactable object, make a model with the following interactable_type attribute:
+To create an interactable object, make a model, give it an "interactable" tag, and give it the following interactable_type attribute:
 
 -   ammo_refill
     -   Refills your ammo instantly
