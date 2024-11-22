@@ -283,6 +283,7 @@ player.explode()
 player.kick()
 player.set_team("defender")
 player.set_team("attacker")
+print(player.is_bot())
 print(player.get_team()) --> attacker
 player.spawn() -- spawns the player if they are not already spawned
 player.respawn() -- force respawns the player, even if they are already spawned
@@ -330,7 +331,7 @@ if setup.status ~= "_" then
     warn("setup is not valid")
 else
 	-- 1st argument is primary, secondary, throwable1, throwable2
-    player.set_weapon("primary", "M4A1", setup.data)
+    player.set_weapon("primary", "M4A1", setup.data.data)
 end
 
 -- you can check if it's broken with get_setup_status
@@ -357,6 +358,16 @@ end
 -- 2nd argument is primary, secondary, throwable1, throwable2
 local loadout_data = player.get_weapon_from_loadout(1, "primary")
 player.set_weapon("secondary", loadout_data.weapon, loadout_data.data)
+
+-- or from the character
+local player_weapon = player.get_weapon_data_from_character("primary")
+
+-- get the setup for the primary weapon and set it to the secondary
+player.set_weapon("secondary", player_weapon.client_data.name, player_weapon.client_data.setup)
+
+-- this has other info
+print(player_weapon.ammo) -- player ammo table. modifying it is unpredictable so don't
+print(player_weapon.client_data.laser_enabled)
 
 -- or you can just save the setup to a string
 -- this doesn't work right now because you can't copy the setup after printing it lmao
