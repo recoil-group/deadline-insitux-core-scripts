@@ -445,9 +445,12 @@ end
 
 -- game data includes current game state (map, gamemode, so on)
 print(game_data.lighting.value) -- print current lighting
-print(game_data.map_properties.lighting_preset) -- or this way
+print(game_data.map_properties.value.lighting_preset) -- or this way
 
-print(game_data.map_properties.map_config) -- print map config
+-- print map config data
+for name, data in pairs(game_data.map_config.value) do
+	print(name, data)
+end
 
 -- to show all values
 for name, data in pairs(game_data) do
