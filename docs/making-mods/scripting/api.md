@@ -108,6 +108,11 @@ sound.remove_tag("tag")
 
 sound.set_attribute("attribute", true)
 sound.get_attribute("attribute")
+
+-- physics
+instance.apply_impulse_at_position(Vector3.new(0, 0, 0), Vector3.new(0, 0, 0))
+instance.apply_angular_impulse_at_position(Vector3.new(0, 0, 0), Vector3.new(0, 0, 0))
+instance.apply_impulse(Vector3.new(0, 0, 0))
 ```
 
 ### sharedvars
@@ -151,6 +156,19 @@ print(shared.value) --> 5
 ```lua
 print("hello world") -- self explanatory
 clear_console() -- clears the console output
+```
+
+### query
+
+```lua
+-- API for spacial queries, etc
+local raycast_params = query.create_raycast_params()
+raycast_params.filter_descendants_instances({ car })
+raycast_params.filter_type(Enum.RaycastFilterType.Exclude)
+
+-- same returns as workspace.Raycast, just lowercase
+local hit = query.raycast(position, direction * suspension_length, raycast_params)
+print(result.instance.Name)
 ```
 
 ## Server globals
