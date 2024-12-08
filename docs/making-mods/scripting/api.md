@@ -69,6 +69,8 @@ time.wait(5)
 ```lua
 
 -- you can access the position and size data of CollectionService tagged instances in your maps with the tags namespace.
+-- get_tagged gets tagged instances in workspace (current map)
+-- get_all_tagged gets all instances (lets you load maps as models and then spawn them in)
 
 print(tags.get_tags()) --> returns a list of every tag used by the game
 print(tags.get_tagged("_killbox")) --> returns a list of every part tagged with _killbox.
@@ -109,10 +111,22 @@ sound.remove_tag("tag")
 sound.set_attribute("attribute", true)
 sound.get_attribute("attribute")
 
+-- models. You can move entire models with pivot_to
+model.pivot_to(model.get_pivot() * CFrame.Angles(0.1, 0, 0))
+
 -- physics
 instance.apply_impulse_at_position(Vector3.new(0, 0, 0), Vector3.new(0, 0, 0))
 instance.apply_angular_impulse_at_position(Vector3.new(0, 0, 0), Vector3.new(0, 0, 0))
 instance.apply_impulse(Vector3.new(0, 0, 0))
+instance.set_network_owner(nil)
+instance.set_network_owner("MyName")
+
+-- some util functions
+-- you can parent things to the map directly with get_map_root()
+instance.Parent = get_map_root()
+
+-- this helps with cloned instances that should disappear when the map is unloaded
+
 ```
 
 ### sharedvars
@@ -123,6 +137,8 @@ instance.apply_impulse(Vector3.new(0, 0, 0))
 -- sharedvars and sharedvars_descriptions exposes this in a simple API
 -- the game has over 100 changeable settings. Check them to make sure
 -- what you might want to do isn't already configurable.
+
+-- there is another page about this on the wiki
 
 for name, description in pairs(sharedvars_descriptions) do
     print(name, description) --> prints every sharedvars value

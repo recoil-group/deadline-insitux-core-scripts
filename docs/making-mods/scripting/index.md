@@ -6,7 +6,9 @@ There's a new Luau scripting tool available in VIP servers in the dev branch as 
 
 VIP servers can run code in the console. You can also use autorun, which is a script that will run
 every time the VIP server starts, allowing you to have servers set themselves up without your involvement.
-There is one for the client and server. The client can change sounds played by the game, create custom UI widgets, load map/attachment mods, talk to the server, etc.
+[More info about autorun here.](../mapping/autorun.md)
+
+The client can also change sounds played by the game, create custom UI widgets, load map/attachment mods, talk to the server, etc.
 
 ## Example
 
