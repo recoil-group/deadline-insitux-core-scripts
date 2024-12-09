@@ -89,6 +89,11 @@ print(tags.get_tagged("_killbox")) --> returns a list of every part tagged with 
 local sound = tags.get_tagged("sound_alarm")[1]
 sound.play() -- for playing sound
 
+-- you can also create any instance
+local highlight = create_instance("Highlight")
+highlight.Parent = character
+highlight.Name = "highlight"
+
 -- you can also create sounds specifically directly
 local sound = sound.create()
 
@@ -124,6 +129,9 @@ instance.set_network_owner("MyName")
 -- some util functions
 -- you can parent things to the map directly with get_map_root()
 instance.Parent = get_map_root()
+
+-- you can also get the character folder
+instance.Parent = get_chars_root()
 
 -- this helps with cloned instances that should disappear when the map is unloaded
 
@@ -359,7 +367,7 @@ on_player_died:Connect(function(name, position, killer_data, stats_counted)
 end)
 
 -- import weapon from a code
-local setup = weapons.get_setup_from_code("4f42-02212-zh1g-3oaa-ozhz-z3nb-caa9-61wo") -- setup only works in dev branch
+local setup = weapons.get_setup_from_code("4f42-02212-zh1g-3oaa-ozhz-z3nb-caa9-61wo") -- this specific setup only works in dev branch
 
 if setup.status ~= "_" then
     warn("setup is not valid")
@@ -605,6 +613,12 @@ table.insert(config.settings_layout.controls, { setting = "toggle_godmode", type
 framework.character.is_alive() -- gets whether you're alive
 framework.character.get_position() -- returns character position
 framework.character.get_camera_cframe() -- gets the camera cframe
+
+-- force nvg
+framework.character.set_nvg_enabled(true)
+
+framework.character.is_nv_enabled() -- also includes whether an nv scope is enabled
+framework.character.is_nv_head_gear_enabled() -- only applies to night vision
 ```
 
 ### interactables

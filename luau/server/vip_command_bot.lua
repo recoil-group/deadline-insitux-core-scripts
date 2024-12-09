@@ -124,9 +124,9 @@ commands = {
 			return str
 		end
 
-		sharedvars.plr_model = time
+		sharedvars.plr_model = outfits
 
-		return "Outfit set to " .. time
+		return "Outfit set to " .. outfits
 	end,
 
 	spawngun = function(args)
