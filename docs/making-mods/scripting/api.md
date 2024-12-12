@@ -787,7 +787,7 @@ ui.render({
 })
 
 -- iris is also included
--- https://michael-48.github.io/Iris/
+-- https://github.com/SirMallard/Iris
 iris:Connect(function()
 	iris.Window({"My Second Window"})
 		iris.Text({"The current time is: " .. tick()})
