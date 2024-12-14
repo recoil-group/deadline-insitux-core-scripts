@@ -330,11 +330,17 @@ print(player.get_team()) --> attacker
 player.spawn() -- spawns the player if they are not already spawned
 player.respawn() -- force respawns the player, even if they are already spawned
 
+-- player id is unique, userid is userid
+print(player.id)
+print(player.player_id)
+
 -- overrides
 player.set_position(Vector3.new(0, 1000, 0))
 player.set_position(tags.get_tagged("spawn_point")[0].position)
+print(player.get_position())
 
 player.set_speed(5)
+player.set_jump_multiplier(1)
 player.set_health(200)
 player.set_initial_health(200) -- doesn't work immediately
 player.set_camera_mode("Freecam")
@@ -372,9 +378,13 @@ local setup = weapons.get_setup_from_code("4f42-02212-zh1g-3oaa-ozhz-z3nb-caa9-6
 if setup.status ~= "_" then
     warn("setup is not valid")
 else
-	-- 1st argument is primary, secondary, throwable1, throwable2
+	-- 1st argument is primary, secondary
     player.set_weapon("primary", "M4A1", setup.data.data)
 end
+
+-- refilling grenades
+player.set_utility("throwable1", "F1")
+players.get("BIackShibe").set_utility("primary", "F1")
 
 -- you can check if it's broken with get_setup_status
 local setup = weapons.get_setup_from_code("cn8q-0231-31bq-zg6d-8m54-g906-o50c-m1f7")
@@ -504,6 +514,11 @@ end
 
 ```lua
 load_modfile("DATA") --> loads a modfile to the game
+
+-- cleanup
+on_modfile_loaded:Connect(function()
+	print("another modfile was loaded")
+end)
 ```
 
 ### networking
@@ -615,10 +630,19 @@ framework.character.get_position() -- returns character position
 framework.character.get_camera_cframe() -- gets the camera cframe
 
 -- force nvg
-framework.character.set_nvg_enabled(true)
+framework.character.set_nv_enabled(true)
 
 framework.character.is_nv_enabled() -- also includes whether an nv scope is enabled
 framework.character.is_nv_head_gear_enabled() -- only applies to night vision
+
+-- spawn & death event
+framework.on_spawned:Connect(function()
+	print("spawned")
+end)
+
+framework.on_died:Connect(function()
+	print("spawned")
+end)
 ```
 
 ### interactables
